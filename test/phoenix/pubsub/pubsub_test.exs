@@ -92,7 +92,7 @@ defmodule Phoenix.PubSub.PubSubTest do
   test "#broadcast publishes message to each subscriber" do
     assert PubSub.create("topic9") == :ok
     PubSub.subscribe(self, "topic9")
-    PubSub.broadcast "topic9", :ping
+    PubSub.broadcast("topic9", :ping) |> Task.await
     assert_received :ping
   end
 
@@ -108,7 +108,7 @@ defmodule Phoenix.PubSub.PubSubTest do
   test "#broadcast_from does not publish to broadcaster pid when provided" do
     assert PubSub.create("topic11") == :ok
     PubSub.subscribe(self, "topic11")
-    PubSub.broadcast_from self, "topic11", :ping
+    PubSub.broadcast_from(self, "topic11", :ping) |> Task.await
     refute_received :ping
   end
 

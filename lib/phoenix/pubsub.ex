@@ -143,11 +143,13 @@ defmodule Phoenix.PubSub do
 
   """
   def broadcast_from(from_pid, topic_name, message) do
-    topic_name
-    |> subscribers
-    |> Enum.each fn
-      pid when pid != from_pid -> send(pid, message)
-      _pid ->
+    Task.async fn ->
+      topic_name
+      |> subscribers
+      |> Enum.each(fn
+        pid when pid != from_pid -> send(pid, message)
+        _pid ->
+      end)
     end
   end
 

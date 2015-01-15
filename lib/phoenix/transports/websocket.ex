@@ -67,6 +67,7 @@ defmodule Phoenix.Transports.WebSocket do
     reply(self, serializer.encode!(message))
     state
   end
+  def ws_info(_msg, state), do: state
 
   @doc """
   Called on WS close. Dispatches the `leave` event back through Transport layer
